@@ -109,7 +109,7 @@ define(function() {
         if (Array.isArray(arr)) return arr;
     }
 
-    var videoElements = document.querySelectorAll('.vjs-fluid');
+    var videoElements = document.querySelectorAll('[data-video-id]');
     var bcAccounts = Array.prototype.slice.call(videoElements).map(function (video) {
         return video.getAttribute('data-account');
     }).filter(function (value, index, self) {
