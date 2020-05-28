@@ -16,13 +16,19 @@
 /**
  * JW Player module.
  *
- * @module     media_jwplayer/jwplayer
- * @package    media_jwplayer
+ * @module     media_bcplayer/bcplayer
+ * @package    media_bcplayer
  * @copyright  2017 Ruslan Kabalin, Lancaster University
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-define(function() {
+define(['jquery', 'core/event'],function($, Event) {
+
+    var videoElements;
+    var bcAccounts;
+    var bcs = {}; // The object that will contain all our 'bc' RJS modules.
+    var index = 0;
+    var accountsPlayer = []; // Change all the data-player attribute to keep Brightcove from trying to
     /**
      * @param arr
      * @param i
@@ -109,42 +115,49 @@ define(function() {
         if (Array.isArray(arr)) return arr;
     }
 
-    var videoElements = document.querySelectorAll('[data-video-id]');
-    var bcAccounts = Array.prototype.slice.call(videoElements).map(function (video) {
-        return video.getAttribute('data-account');
-    }).filter(function (value, index, self) {
-        return self.indexOf(value) === index;
-    });
-    var bcs = {}; // The object that will contain all our 'bc' RJS modules.
+    /**
+     */
+    function findVideoJs(){
+        videoElements = document.querySelectorAll('video-js');
+        bcAccounts = Array.prototype.slice.call(videoElements).map(function (video) {
+            return video.getAttribute('data-player');
+        }).filter(function (value, index, self) {
+            return self.indexOf(value) === index;
+        });
+    }
 
-    var index = 0;
-    var accountsPlayer = []; // Change all the data-player attribute to keep Brightcove from trying to
-// initialize every player when the first script is retrieved.
+    /**
+     * initialize every player when the first script is retrieved.
+     */
+    function iterateVideoElemets() {
+        videoElements.forEach(function (video, index) {
+            var playerId = video.getAttribute('data-player');
+            var accountId = video.getAttribute('data-account');
 
-    videoElements.forEach(function (video, index) {
-        var playerId = video.getAttribute('data-player');
-        var accountId = video.getAttribute('data-account');
-
-        if (accountsPlayer[accountId]) {
-            if (!accountsPlayer[accountId].includes(playerId)) {
-                accountsPlayer[accountId].push(playerId);
+            if (accountsPlayer[accountId]) {
+                if (!accountsPlayer[accountId].includes(playerId)) {
+                    accountsPlayer[accountId].push(playerId);
+                }
+            } else {
+                accountsPlayer[accountId] = [playerId];
             }
-        } else {
-            accountsPlayer[accountId] = [playerId];
-        }
-
-        video.setAttribute('data-store-player', playerId);
-        video.removeAttribute('data-player');
-    });
+            video.setAttribute('data-store-player', playerId);
+            video.removeAttribute('data-player');
+        });
+    }
+    findVideoJs();
+    iterateVideoElemets();
     /**
      * @param account string
      */
-    function initVideosByAccount(account) {
-        var videos = document.querySelectorAll("[data-account='".concat(account, "']"));
+    function initVideosByAccount(account, player) {
+        var videos = document.querySelectorAll(`video-js[data-account="${account}"][data-store-player="${player}"]`);
         videos.forEach(function (video) {
             video.setAttribute('data-player', video.getAttribute('data-store-player'));
-            bcs["bc".concat(account)](video);
+            bcs["bc".concat(account).concat(player)](video);
+            videojs(video.id).controls(true);
         });
+
     }
 
     /**
@@ -168,32 +181,53 @@ define(function() {
 
         require(['bc'], function (bc) {
             // Store the current bc in bcs, because we're going to undefine it.
-            bcs["bc".concat(account)] = bc; // Initialize all the videos for this account.
+            bcs["bc".concat(account).concat(pl)] = bc; // Initialize all the videos for this account.
 
-            initVideosByAccount(account);
-
+            initVideosByAccount(account, pl);
             if (index < bcAccounts.length - 1) {
-                getBcModule(bcAccounts[++index]);
+                getBcModule(account, bcAccounts[++index]);
             }
         });
+    }
+
+    /**
+     * load Bright Cove
+     */
+    function loadAllBrightcove() {
+        for (var _i = 0, _Object$entries = Object.entries(accountsPlayer); _i < _Object$entries.length; _i++) {
+            var _Object$entries$_i = _slicedToArray(_Object$entries[_i], 2),
+                key = _Object$entries$_i[0],
+                value = _Object$entries$_i[1];
+
+            for (var _i2 = 0, _Object$entries2 = Object.entries(value); _i2 < _Object$entries2.length; _i2++) {
+                var _Object$entries2$_i = _slicedToArray(_Object$entries2[_i2], 2),
+                    ind = _Object$entries2$_i[0],
+                    val = _Object$entries2$_i[1];
+                getBcModule(key, val);
+            }
+        }
     }
 
     // Load all accounts and related players
     return {
         init: function() {
-            for (var _i = 0, _Object$entries = Object.entries(accountsPlayer); _i < _Object$entries.length; _i++) {
-                var _Object$entries$_i = _slicedToArray(_Object$entries[_i], 2),
-                    key = _Object$entries$_i[0],
-                    value = _Object$entries$_i[1];
+            loadAllBrightcove();
 
-                for (var _i2 = 0, _Object$entries2 = Object.entries(value); _i2 < _Object$entries2.length; _i2++) {
-                    var _Object$entries2$_i = _slicedToArray(_Object$entries2[_i2], 2),
-                        ind = _Object$entries2$_i[0],
-                        val = _Object$entries2$_i[1];
+            $(document).on('brightcoveinsertedtodom',function (event) {
+                findVideoJs();
+                iterateVideoElemets();
+                loadAllBrightcove();
+            });
 
-                    getBcModule(key, val);
-                }
-            }
+
+            Event.getLegacyEvents().done(function (events) {
+                $(document).on(events.FILTER_CONTENT_UPDATED, function (event) {
+                    $(".editor_atto_wrap").find('video-js').addBack('video-js').each(function () {
+                        var __self = $(this);
+                        getBcModule(__self.data('account'), __self.data('player'));
+                    });
+                });
+            });
         }
 
     };
