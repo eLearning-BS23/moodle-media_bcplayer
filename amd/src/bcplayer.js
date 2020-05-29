@@ -155,7 +155,11 @@ define(['jquery', 'core/event'],function($, Event) {
         videos.forEach(function (video) {
             video.setAttribute('data-player', video.getAttribute('data-store-player'));
             bcs["bc".concat(account).concat(player)](video);
-            videojs(video.id).controls(true);
+            var controllerr = videojs(video.id);
+            controllerr.controls(true);
+            if (controllerr.hasClass('vjs-play-button-shape-square')){
+                controllerr.removeClass('vjs-play-button-shape-square');
+            }
         });
 
     }
