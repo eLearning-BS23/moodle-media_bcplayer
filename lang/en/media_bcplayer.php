@@ -23,6 +23,9 @@
  */
 
 defined('MOODLE_INTERNAL') || die();
-
+$string['media_bcplayerdescription'] = 'Brightcove Video player';
 $string['appearanceconfig'] = 'Appearance';
+$string['pluginname'] = 'Brightcove Player';
+$string['privacy:metadata'] = 'The Media Brightcove Player plugin does not store any personal data.';
+
 
