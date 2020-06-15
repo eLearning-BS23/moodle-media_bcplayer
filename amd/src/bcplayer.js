@@ -93,6 +93,20 @@ define(['jquery', 'core/event'],($, Event) => {
                 if (res.hasClass('vjs-play-button-shape-square')){
                     res.removeClass('vjs-play-button-shape-square');
                 }
+                // res.on('loadedmetadata',() => {
+                //     console.log('Video duration: ' + res.duration() + 'secounds');
+                //     console.log('Video Playback speed: ' + res.playbackRate() );
+                //     console.log('User Active: ' + res.userActive() );
+                //
+                // });
+                    // Fired when the current playback position has changed * During playback this is fired every
+                    // 15-250 milliseconds, depending on the playback technology in use.
+                res.on('timeupdate', () => {
+                    // console.log('Video duration: ' + res.duration() + 'secounds');
+                    // console.log('Video Playback speed: ' + res.playbackRate() );
+                    // console.log('User Active: ' + res.userActive() );
+                    console.log('Video remaining time: ' + res.remainingTime() );
+                });
             });
             return res;
     };
