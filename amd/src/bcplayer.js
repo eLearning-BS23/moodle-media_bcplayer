@@ -122,16 +122,13 @@ define(['jquery', 'core/event'],($, Event) => {
 
             Event.getLegacyEvents().done((events) => {
                 let count = 0;
-                $(document).on(events.FILTER_CONTENT_UPDATED, () => {
-                    count++;
-                    if (count <= 1) {
-                        loadBrightcove();
-                        // $(".editor_atto_wrap").find('video-js').addBack('video-js').each(function() {
-                        //     const __self = $(this);
-                        //     __self.innerHTML = '';
-                        //     getBcModule({acc: __self.data('account'), player: __self.data('player')});
-                        // });
-                    }
+                $(document).one(events.FILTER_CONTENT_UPDATED, () => {
+                    loadBrightcove();
+                    // $(".editor_atto_wrap").find('video-js').addBack('video-js').each(function() {
+                    //     const __self = $(this);
+                    //     __self.innerHTML = '';
+                    //     getBcModule({acc: __self.data('account'), player: __self.data('player')});
+                    // });
                 });
             });
         }
