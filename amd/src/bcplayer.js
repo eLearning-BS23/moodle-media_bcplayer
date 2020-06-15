@@ -41,13 +41,22 @@ define(['jquery', 'core/event'],($, Event) => {
 
     const loadBrightcove = async() => {
         const videoElements = document.querySelectorAll('video-js');
-        const bcAccounts = Array.prototype.slice.call(videoElements)
-            .map((video) => ({acc : video.getAttribute('data-account'), player : video.getAttribute('data-player')}))
-            .filter((value, index, self) => self.indexOf(value) === index);
-        removeDataAttr(videoElements);
-        for (let index = 0; index < bcAccounts.length; index++) {
-            await getBcModule(bcAccounts[index]);
+        if(videoElements.length){
+            const bcAccounts = Array.prototype.slice.call(videoElements)
+                .map((video) => ({acc : video.getAttribute('data-account'), player : video.getAttribute('data-player')}))
+                .filter((value, index, self) => self.indexOf(value) === index);
+            removeDataAttr(videoElements);
+            for (let index = 0; index < bcAccounts.length; index++) {
+                await getBcModule(bcAccounts[index]);
+            }
+        }else {
+            Event.getLegacyEvents().done((events) => {
+                $(document).one(events.FILTER_CONTENT_UPDATED, () => {
+                    loadBrightcove();
+                });
+            });
         }
+
     };
 
     const getBcModule = function (obj) {
@@ -114,22 +123,10 @@ define(['jquery', 'core/event'],($, Event) => {
     // Load all accounts and related players
     return {
         init() {
+            loadBrightcove();
 
             $(document).on('brightcoveinsertedtodom',() => {
                 loadBrightcove();
-            });
-
-
-            Event.getLegacyEvents().done((events) => {
-                let count = 0;
-                $(document).one(events.FILTER_CONTENT_UPDATED, () => {
-                    loadBrightcove();
-                    // $(".editor_atto_wrap").find('video-js').addBack('video-js').each(function() {
-                    //     const __self = $(this);
-                    //     __self.innerHTML = '';
-                    //     getBcModule({acc: __self.data('account'), player: __self.data('player')});
-                    // });
-                });
             });
         }
 
