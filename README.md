@@ -8,5 +8,4 @@
 # instalation 
 - check how to install moodle plugins (https://docs.moodle.org/39/en/Installing_plugins)
 - Or download and unzip the code
-- paste the code to /lib/editor/atto/plugins
-- After install this plugin you have to install https://github.com/sahedbs23/Moodle-brightcove-loader Brightcove player plugin
+- paste the code to /media/player/
