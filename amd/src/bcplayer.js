@@ -14,11 +14,11 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * JW Player module.
+ * Brightcove Player module.
  *
  * @module     media_bcplayer/bcplayer
  * @package    media_bcplayer
- * @copyright  2017 Ruslan Kabalin, Lancaster University
+ * @copyright   2020 Brain station 23 ltd. <https://brainstation-23.com/>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
