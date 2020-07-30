@@ -17,9 +17,9 @@
 /**
  * Forum event handler definition.
  *
- * @package mod_forum
  * @category event
- * @copyright 2010 Petr Skoda  {@link http://skodak.org}
+ * @package    media_bcplayer
+ * @copyright   2020 Brain station 23 ltd. <https://brainstation-23.com/>
  * @license http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
