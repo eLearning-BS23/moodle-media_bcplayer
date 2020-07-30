@@ -18,7 +18,7 @@
  * Privacy Subsystem implementation for media_bcplayer.
  *
  * @package    media_bcplayer
- * @copyright  2018 Ruslan Kabalin, Lancaster University
+ * @copyright   2020 Brain station 23 ltd. <https://brainstation-23.com/>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
@@ -29,7 +29,8 @@ defined('MOODLE_INTERNAL') || die();
 /**
  * Privacy Subsystem for media_bcplayer implementing null_provider.
  *
- * @copyright  2018 Ruslan Kabalin, Lancaster University
+ * @package    media_bcplayer
+ * @copyright   2020 Brain station 23 ltd. <https://brainstation-23.com/>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class provider implements \core_privacy\local\metadata\null_provider {
