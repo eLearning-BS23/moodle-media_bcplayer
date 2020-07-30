@@ -15,10 +15,10 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Event observers used in forum.
+ * Event observers 
  *
- * @package    mod_forum
- * @copyright  2013 Rajesh Taneja <rajesh@moodle.com>
+ * @package    media_bcplayer
+ * @copyright   2020 Brain station 23 ltd. <https://brainstation-23.com/>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
@@ -28,7 +28,7 @@ use core\event\course_module_updated;
 defined('MOODLE_INTERNAL') || die();
 
 /**
- * Event observer for mod_forum.
+ * Event observer.
  */
 class media_bcplayer_observer {
 
