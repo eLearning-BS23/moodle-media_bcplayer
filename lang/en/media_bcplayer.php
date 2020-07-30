@@ -15,10 +15,9 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Strings for component 'media_jwplayer', language 'en'
- *
- * @package    media_jwplayer
- * @copyright  2017 Ruslan Kabalin, Lancaster University
+ * Strings for component 'media_bcplayer', language 'en'
+ * @package    media_bcplayer
+ * @copyright   2020 Brain station 23 ltd. <https://brainstation-23.com/>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
