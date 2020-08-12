@@ -24,6 +24,7 @@
 
 define(['jquery', 'core/event'],($, Event) => {
     const bcs = {}; // The object that will contain all our 'bc' RJS modules.
+    
 
     const removeDataAttr = (videos) => {
         // Change all the data-player attribute to keep Brightcove from trying to
@@ -71,7 +72,7 @@ define(['jquery', 'core/event'],($, Event) => {
         // Set the 'bc' module path using this video's account and player ids.
         requirejs.config({
             paths: {
-                'bc': `https://players.brightcove.net/${obj.acc}/${obj.player}_default/index.min`
+                'bc': `${location.protocol}//players.brightcove.net/${obj.acc}/${obj.player}_default/index.min`
             }
         });
 
