@@ -71,7 +71,7 @@ define(['jquery', 'core/event'],($, Event) => {
         // Set the 'bc' module path using this video's account and player ids.
         requirejs.config({
             paths: {
-                'bc': `http://players.brightcove.net/${obj.acc}/${obj.player}_default/index.min`
+                'bc': `https://players.brightcove.net/${obj.acc}/${obj.player}_default/index.min`
             }
         });
 
