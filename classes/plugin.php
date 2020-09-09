@@ -24,7 +24,6 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-require_once(__DIR__ . '/../lib.php');
 
 class media_bcplayer_plugin extends core_media_player {
 
