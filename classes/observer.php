@@ -62,7 +62,7 @@ class media_bcplayer_observer
      *
      * @param course_module_created $event
      * @return void
-     * @throws coding_exception
+     * @throws coding_exception|dml_exception
      */
     public static function course_module_created(course_module_created $event)
     {
