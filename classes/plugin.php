@@ -26,11 +26,6 @@ defined('MOODLE_INTERNAL') || die();
 
 require_once(__DIR__ . '/../lib.php');
 
-/**
- * @package    media_bcplayer
- * @copyright   2020 Brain station 23 ltd. <https://brainstation-23.com/>
- * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
- */
 class media_bcplayer_plugin extends core_media_player {
 
     /**
