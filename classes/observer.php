@@ -41,15 +41,15 @@ class media_bcplayer_observer
      * @throws coding_exception
      * @throws dml_exception
      */
-    public static function course_module_updated(course_module_updated $event){
+    public static function course_module_updated(course_module_updated $event) {
         global $CFG, $DB;
 
         $modulename = $event->get_record_snapshot($event->other['modulename'], $event->other['instanceid']);
         $dom = new DOMDocument();
         $elem = @$dom->loadHTML($modulename->intro);
         $parentnodes = $dom->getElementsByTagName('video-js');
-        foreach ($parentnodes as $parentNode){
-            self::removevideojschild($parentNode);
+        foreach ($parentnodes as $parentnode) {
+            self::removevideojschild($parentnode);
         }
         $body = $dom->getElementsByTagName('body')->item(0);
         $modulename->intro = $dom->saveXML($body);
@@ -63,15 +63,15 @@ class media_bcplayer_observer
      * @return void
      * @throws coding_exception|dml_exception
      */
-    public static function course_module_created(course_module_created $event){
+    public static function course_module_created(course_module_created $event) {
         global $CFG, $DB;
 
         $modulename = $event->get_record_snapshot($event->other['modulename'], $event->other['instanceid']);
         $dom = new DOMDocument();
         $elem = @$dom->loadHTML($modulename->intro);
         $parentnodes = $dom->getElementsByTagName('video-js');
-        foreach ($parentnodes as $parentNode){
-            self::removevideojschild($parentNode);
+        foreach ($parentnodes as $parentnode) {
+            self::removevideojschild($parentnode);
         }
 
         $body = $dom->getElementsByTagName('body')->item(0);
@@ -83,21 +83,21 @@ class media_bcplayer_observer
      * Remove video-js tag others child DOM elements.
      * @param DOMNode $parentnode
      */
-    private static function removevideojschild(DOMNode $parentnode){
-        if ($parentnode->hasAttribute('class')){
+    private static function removevideojschild(DOMNode $parentnode) {
+        if ($parentnode->hasAttribute('class')) {
             $parentnode->removeAttribute('class');
             $parentnode->setAttribute('class', 'vjs-big-play-centered');
         }
-        if ($parentnode->hasAttribute('data-store-video-id')){
+        if ($parentnode->hasAttribute('data-store-video-id')) {
             $parentnode->removeAttribute('data-store-video-id');
         }
-        if ($parentnode->hasAttribute('data-store-account')){
+        if ($parentnode->hasAttribute('data-store-account')) {
             $parentnode->removeAttribute('data-store-account');
         }
-        if ($parentnode->hasAttribute('data-store-player')){
+        if ($parentnode->hasAttribute('data-store-player')) {
             $parentnode->removeAttribute('data-store-player');
         }
-        while ($parentnode->hasChildNodes()){
+        while ($parentnode->hasChildNodes()) {
             $parentnode->removeChild($parentnode->firstChild);
         }
 
