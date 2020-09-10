@@ -15,22 +15,23 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Forum event handler definition.
- *
+ * Media Brightcove player event handler definition.
  * @category event
  * @package    media_bcplayer
  * @copyright   2020 Brain station 23 ltd. <https://brainstation-23.com/>
  * @license http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
+defined('MOODLE_INTERNAL') || die();
+
 // List of observers.
 $observers = array(
     array(
         'eventname' => '\core\event\course_module_created',
-        'callback'  => 'media_bcplayer_observer::course_module_created',
+        'callback' => 'media_bcplayer_observer::course_module_created',
     ),
     array(
         'eventname' => '\core\event\course_module_updated',
-        'callback'  => 'media_bcplayer_observer::course_module_updated',
+        'callback' => 'media_bcplayer_observer::course_module_updated',
     )
 );

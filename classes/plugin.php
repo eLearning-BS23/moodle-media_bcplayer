@@ -24,32 +24,28 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-require_once(__DIR__ . '/../lib.php');
 
-/**
- * @package    media_bcplayer
- * @copyright   2020 Brain station 23 ltd. <https://brainstation-23.com/>
- * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
- */
-class media_bcplayer_plugin extends core_media_player {
+class media_bcplayer_plugin extends core_media_player
+{
 
     /**
-    * Setup page requirements.
-    *
-    * @param moodle_page $page the page we are going to add requirements to.
-    * @return void
-    */
-    public function setup($page) {
+     * @inheritDoc
+     */
+    public function setup($page){
         $page->requires->js_amd_inline("require(['media_bcplayer/bcplayer'], function (bc) {bc.init();})");
     }
 
-    public function embed($urls, $name, $width, $height, $options)
-    {
+    /**
+     * @inheritDoc
+     */
+    public function embed($urls, $name, $width, $height, $options){
         // TODO: Implement embed() method.
     }
 
-    public function get_rank()
-    {
+    /**
+     * @inheritDoc
+     */
+    public function get_rank(){
         // TODO: Implement get_rank() method.
     }
 }
