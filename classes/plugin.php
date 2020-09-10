@@ -14,38 +14,73 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
+defined('MOODLE_INTERNAL') || die();
+
 /**
- * Main class for 'media_bcplayer'.
+ * Plugin class for media players.
+ *
+ * Media players return embed HTML for a particular way of playing back audio
+ * or video (or another file type).
  *
  * @package    media_bcplayer
  * @copyright   2020 Brain station 23 ltd. <https://brainstation-23.com/>
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-defined('MOODLE_INTERNAL') || die();
-
-
 class media_bcplayer_plugin extends core_media_player
 {
 
     /**
-     * @inheritDoc
+     * Setup page requirements.
+     *
+     * The typical javascript requirements MUST not take action on the content
+     * directly. They are meant to load the required libraries and listen
+     * to events in order to know when to take action. The role of this method
+     * is not to provide a way for plugins to look for content to embed on the
+     * page. The {@link self::embed()} method is meant to be used for that.
+     *
+     * @param moodle_page $page The page we are going to add requirements to.
+     * @since Moodle 3.2
      */
-    public function setup($page){
+    public function setup($page) {
         $page->requires->js_amd_inline("require(['media_bcplayer/bcplayer'], function (bc) {bc.init();})");
     }
 
     /**
-     * @inheritDoc
+     * Generates code required to embed the player.
+     *
+     * The returned code contains a placeholder comment '<!--FALLBACK-->'
+     * (constant core_media_player::PLACEHOLDER) which indicates the location
+     * where fallback content should be placed in the event that this type of
+     * player is not supported by user browser.
+     *
+     * The $urls parameter includes one or more alternative media formats that
+     * are supported by this player. It does not include formats that aren't
+     * supported (see list_supported_urls).
+     *
+     * The $options array contains key-value pairs. See OPTION_xx constants
+     * for documentation of standard option(s).
+     *
+     * @param array $urls URLs of media files
+     * @param string $name Display name; '' to use default
+     * @param int $width Optional width; 0 to use default
+     * @param int $height Optional height; 0 to use default
+     * @param array $options Options array
      */
-    public function embed($urls, $name, $width, $height, $options){
+    public function embed($urls, $name, $width, $height, $options) {
         // TODO: Implement embed() method.
     }
 
     /**
-     * @inheritDoc
+     * Gets the ranking of this player. This is an integer used to decide which
+     * player to use (after applying other considerations such as which ones
+     * the user has disabled).
+     *
+     * This function returns the default rank that can be adjusted by the administrator
+     * on the Manage media players page.
+     *
      */
-    public function get_rank(){
+    public function get_rank() {
         // TODO: Implement get_rank() method.
     }
 }

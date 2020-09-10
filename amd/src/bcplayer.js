@@ -37,11 +37,11 @@ define(['jquery', 'core/event'], ($, Event) => {
         });
     };
 
-    const loadBrightcove = async () => {
+    const loadBrightcove = async ()=> {
         const videoElements = document.querySelectorAll('video-js');
         if (videoElements.length) {
             const bcAccounts = Array.prototype.slice.call(videoElements)
-                .map((video) => ({acc:video.getAttribute('data-account'), player:video.getAttribute('data-player')}))
+                .map((video) => ({acc: video.getAttribute('data-account'), player: video.getAttribute('data-player')}))
                 .filter((value, index, self) => self.indexOf(value) === index);
             removeDataAttr(videoElements);
             for (let index = 0; index < bcAccounts.length; index++) {
@@ -87,7 +87,7 @@ define(['jquery', 'core/event'], ($, Event) => {
         }));
     };
 
-    const initVideosByAccount = function (account) {
+    const initVideosByAccount = function(account) {
         // eslint-disable-next-line max-len
         const videos = document.querySelectorAll(`video-js[data-store-account='${account.acc}'][data-store-player='${account.player}']`);
         let res;
