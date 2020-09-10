@@ -25,25 +25,27 @@
 defined('MOODLE_INTERNAL') || die();
 
 
-class media_bcplayer_plugin extends core_media_player {
+class media_bcplayer_plugin extends core_media_player
+{
 
     /**
-    * Setup page requirements.
-    *
-    * @param moodle_page $page the page we are going to add requirements to.
-    * @return void
-    */
-    public function setup($page) {
+     * @inheritDoc
+     */
+    public function setup($page){
         $page->requires->js_amd_inline("require(['media_bcplayer/bcplayer'], function (bc) {bc.init();})");
     }
 
-    public function embed($urls, $name, $width, $height, $options)
-    {
+    /**
+     * @inheritDoc
+     */
+    public function embed($urls, $name, $width, $height, $options){
         // TODO: Implement embed() method.
     }
 
-    public function get_rank()
-    {
+    /**
+     * @inheritDoc
+     */
+    public function get_rank(){
         // TODO: Implement get_rank() method.
     }
 }

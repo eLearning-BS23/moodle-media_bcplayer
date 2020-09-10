@@ -23,8 +23,6 @@
 
 define(['jquery', 'core/event'], ($, Event) => {
     const bcs = {}; // The object that will contain all our 'bc' RJS modules.
-
-
     const removeDataAttr = (videos) => {
         // Change all the data-player attribute to keep Brightcove from trying to
         // Initialize every player when the first script is retrieved.
@@ -43,7 +41,7 @@ define(['jquery', 'core/event'], ($, Event) => {
         const videoElements = document.querySelectorAll('video-js');
         if (videoElements.length) {
             const bcAccounts = Array.prototype.slice.call(videoElements)
-                .map((video) => ({acc: video.getAttribute('data-account'), player: video.getAttribute('data-player')}))
+                .map((video) => ({acc:video.getAttribute('data-account'), player:video.getAttribute('data-player')}))
                 .filter((value, index, self) => self.indexOf(value) === index);
             removeDataAttr(videoElements);
             for (let index = 0; index < bcAccounts.length; index++) {
@@ -59,17 +57,17 @@ define(['jquery', 'core/event'], ($, Event) => {
 
     };
 
-    const getBcModule = function (obj) {
+    const getBcModule = function(obj) {
 
         // Undefine 'bc' module so it can be reset using the next player's values.
         // Because Brightcove's script forces itself to be named 'bc' when called as
         // An AMD module, you have to undefine it before calling a second 'bc' module
         // With a different url. Simply changing the path and requiring it won't work.
         // It has to be undef'd before a second call can be made.
-        requirejs.undef('bc');
+        window.requirejs.undef('bc');
 
         // Set the 'bc' module path using this video's account and player ids.
-        requirejs.config({
+        window.requirejs.config({
             paths: {
                 'bc': `${location.protocol}//players.brightcove.net/${obj.acc}/${obj.player}_default/index.min`
             }
@@ -77,7 +75,7 @@ define(['jquery', 'core/event'], ($, Event) => {
 
         return new Promise(((resolve) => {
             // After 1 second signal that the job is finished with an error
-            require(['bc'], (bc) => {
+            window.require(['bc'], (bc) => {
                 // Store the current bc in bcs, because we're going to undefine it.
                 bcs[`bc${obj.acc}${obj.player}`] = bc;
                 // Initialize all the videos for this account.
@@ -102,11 +100,6 @@ define(['jquery', 'core/event'], ($, Event) => {
             if (res.hasClass('vjs-play-button-shape-square')) {
                 res.removeClass('vjs-play-button-shape-square');
             }
-            // Fired when the current playback position has changed * During playback this is fired every
-            // 15-250 milliseconds, depending on the playback technology in use.
-            res.on('timeupdate', () => {
-                console.log('Video remaining time: ' + res.remainingTime());
-            });
         });
         return res;
     };

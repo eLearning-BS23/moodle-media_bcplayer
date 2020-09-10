@@ -15,7 +15,7 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Event observers
+ * Event observers.
  *
  * @package    media_bcplayer
  * @copyright   2020 Brain station 23 ltd. <https://brainstation-23.com/>
@@ -41,20 +41,19 @@ class media_bcplayer_observer
      * @throws coding_exception
      * @throws dml_exception
      */
-    public static function course_module_updated(course_module_updated $event)
-    {
+    public static function course_module_updated(course_module_updated $event){
         global $CFG, $DB;
 
-        $moduleName = $event->get_record_snapshot($event->other['modulename'], $event->other['instanceid']);
+        $modulename = $event->get_record_snapshot($event->other['modulename'], $event->other['instanceid']);
         $dom = new DOMDocument();
-        $elem = @$dom->loadHTML($moduleName->intro);
-        $parentNodes = $dom->getElementsByTagName('video-js');
-        foreach ($parentNodes as $parentNode) {
-            self::removeVideoJsChild($parentNode);
+        $elem = @$dom->loadHTML($modulename->intro);
+        $parentnodes = $dom->getElementsByTagName('video-js');
+        foreach ($parentnodes as $parentNode){
+            self::removevideojschild($parentNode);
         }
         $body = $dom->getElementsByTagName('body')->item(0);
-        $moduleName->intro = $dom->saveXML($body);
-        $DB->update_record($event->other['modulename'], $moduleName);
+        $modulename->intro = $dom->saveXML($body);
+        $DB->update_record($event->other['modulename'], $modulename);
     }
 
     /**
@@ -64,40 +63,42 @@ class media_bcplayer_observer
      * @return void
      * @throws coding_exception|dml_exception
      */
-    public static function course_module_created(course_module_created $event)
-    {
+    public static function course_module_created(course_module_created $event){
         global $CFG, $DB;
 
-        $moduleName = $event->get_record_snapshot($event->other['modulename'], $event->other['instanceid']);
+        $modulename = $event->get_record_snapshot($event->other['modulename'], $event->other['instanceid']);
         $dom = new DOMDocument();
-        $elem = @$dom->loadHTML($moduleName->intro);
-        $parentNodes = $dom->getElementsByTagName('video-js');
-        foreach ($parentNodes as $parentNode) {
-            self::removeVideoJsChild($parentNode);
+        $elem = @$dom->loadHTML($modulename->intro);
+        $parentnodes = $dom->getElementsByTagName('video-js');
+        foreach ($parentnodes as $parentNode){
+            self::removevideojschild($parentNode);
         }
 
         $body = $dom->getElementsByTagName('body')->item(0);
-        $moduleName->intro = $dom->saveXML($body);
-        $DB->update_record($event->other['modulename'], $moduleName);
+        $modulename->intro = $dom->saveXML($body);
+        $DB->update_record($event->other['modulename'], $modulename);
     }
 
-    private static function removeVideoJsChild(DOMNode $parentNode)
-    {
-        if ($parentNode->hasAttribute('class')) {
-            $parentNode->removeAttribute('class');
-            $parentNode->setAttribute('class', 'vjs-big-play-centered');
+    /**
+     * Remove video-js tag others child DOM elements.
+     * @param DOMNode $parentnode
+     */
+    private static function removevideojschild(DOMNode $parentnode){
+        if ($parentnode->hasAttribute('class')){
+            $parentnode->removeAttribute('class');
+            $parentnode->setAttribute('class', 'vjs-big-play-centered');
         }
-        if ($parentNode->hasAttribute('data-store-video-id')) {
-            $parentNode->removeAttribute('data-store-video-id');
+        if ($parentnode->hasAttribute('data-store-video-id')){
+            $parentnode->removeAttribute('data-store-video-id');
         }
-        if ($parentNode->hasAttribute('data-store-account')) {
-            $parentNode->removeAttribute('data-store-account');
+        if ($parentnode->hasAttribute('data-store-account')){
+            $parentnode->removeAttribute('data-store-account');
         }
-        if ($parentNode->hasAttribute('data-store-player')) {
-            $parentNode->removeAttribute('data-store-player');
+        if ($parentnode->hasAttribute('data-store-player')){
+            $parentnode->removeAttribute('data-store-player');
         }
-        while ($parentNode->hasChildNodes()) {
-            $parentNode->removeChild($parentNode->firstChild);
+        while ($parentnode->hasChildNodes()){
+            $parentnode->removeChild($parentnode->firstChild);
         }
 
     }
