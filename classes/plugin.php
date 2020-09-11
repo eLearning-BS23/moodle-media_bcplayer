@@ -14,19 +14,24 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
-defined('MOODLE_INTERNAL') || die();
-
 /**
- * Plugin class for media players.
+ * Plugin file for media players.
  *
- * Media players return embed HTML for a particular way of playing back audio
- * or video (or another file type).
- *
- * @package    media_bcplayer
+ * @package    media_bcplayer_plugin
  * @copyright   2020 Brain station 23 ltd. <https://brainstation-23.com/>
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
+defined('MOODLE_INTERNAL') || die();
 
+/**
+ * Plugin class for media_bcplayer.
+ *
+ * Media players return embed HTML for a particular way of playing back audio
+ * or video (or another file type).
+ * @package    media_bcplayer_plugin
+ * @copyright   2020 Brain station 23 ltd. <https://brainstation-23.com/>
+ * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
 class media_bcplayer_plugin extends core_media_player
 {
 
@@ -36,13 +41,13 @@ class media_bcplayer_plugin extends core_media_player
      * The typical javascript requirements MUST not take action on the content
      * directly. They are meant to load the required libraries and listen
      * to events in order to know when to take action. The role of this method
-     * is not to provide a way for plugins to look for content to embed on the
-     * page. The {@link self::embed()} method is meant to be used for that.
+     * is not to provide a way for plugins to look for content to embed on the page.
      *
      * @param moodle_page $page The page we are going to add requirements to.
      * @since Moodle 3.2
      */
-    public function setup($page) {
+    public function setup($page)
+    {
         $page->requires->js_amd_inline("require(['media_bcplayer/bcplayer'], function (bc) {bc.init();})");
     }
 
