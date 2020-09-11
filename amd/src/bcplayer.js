@@ -37,7 +37,7 @@ define(['jquery', 'core/event'], ($, Event) => {
         });
     };
 
-    const loadBrightcove = async ()=> {
+    const loadBrightcove = async() => {
         const videoElements = document.querySelectorAll('video-js');
         if (videoElements.length) {
             const bcAccounts = Array.prototype.slice.call(videoElements)
