@@ -46,7 +46,7 @@ class media_bcplayer_plugin extends core_media_player
      * @param moodle_page $page The page we are going to add requirements to.
      * @since Moodle 3.2
      */
-    public function setup($page){
+    public function setup($page) {
         $page->requires->js_amd_inline("require(['media_bcplayer/bcplayer'], function (bc) {bc.init();})");
     }
 
