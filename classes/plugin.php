@@ -17,8 +17,8 @@
 /**
  * Plugin file for media players.
  *
- * @package    media_bcplayer_plugin
- * @copyright   2020 Brain station 23 ltd. <https://brainstation-23.com/>
+ * @package   media_bcplayer
+ * @copyright 2020 Brain station 23 ltd. <https://brainstation-23.com/>
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 defined('MOODLE_INTERNAL') || die();
@@ -28,8 +28,8 @@ defined('MOODLE_INTERNAL') || die();
  *
  * Media players return embed HTML for a particular way of playing back audio
  * or video (or another file type).
- * @package    media_bcplayer_plugin
- * @copyright   2020 Brain station 23 ltd. <https://brainstation-23.com/>
+ * @package   media_bcplayer
+ * @copyright 2020 Brain station 23 ltd. <https://brainstation-23.com/>
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class media_bcplayer_plugin extends core_media_player
@@ -46,8 +46,7 @@ class media_bcplayer_plugin extends core_media_player
      * @param moodle_page $page The page we are going to add requirements to.
      * @since Moodle 3.2
      */
-    public function setup($page)
-    {
+    public function setup($page){
         $page->requires->js_amd_inline("require(['media_bcplayer/bcplayer'], function (bc) {bc.init();})");
     }
 
