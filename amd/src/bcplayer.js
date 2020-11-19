@@ -22,97 +22,84 @@
  */
 
 define(['jquery', 'core/event'], ($, Event) => {
-    const bcs = {}; // The object that will contain all our 'bc' RJS modules.
-    const removeDataAttr = (videos) => {
-        // Change all the data-player attribute to keep Brightcove from trying to
-        // Initialize every player when the first script is retrieved.
-        videos.forEach((video) => {
-            video.innerHTML = '';
-            video.setAttribute('data-store-account', video.getAttribute('data-account'));
-            video.setAttribute('data-store-player', video.getAttribute('data-player'));
-            video.setAttribute('data-store-video-id', video.getAttribute('data-video-id'));
-            video.removeAttribute('data-account');
-            video.removeAttribute('data-player');
-            video.removeAttribute('data-video-id');
+    var bcs = {};
+    /**
+     * Set-up.
+     *
+     * Adds the listener for the event to then notify video.js.
+     * @param {Function} executeonload function to execute when media_videojs/video is loaded
+     */
+    var setUp = function() {
+        // Notify Video.js about the nodes already present on the page.
+        notifyVideoJS(null, $('body'));
+        // We need to call popover automatically if nodes are added to the page later.
+        Event.getLegacyEvents().done(function(events) {
+            $(document).on(events.FILTER_CONTENT_UPDATED, notifyVideoJS);
         });
+
     };
 
-    const loadBrightcove = async() => {
-        const videoElements = document.querySelectorAll('video-js');
-        if (videoElements.length) {
-            const bcAccounts = Array.prototype.slice.call(videoElements)
-                .map((video) => ({acc: video.getAttribute('data-account'), player: video.getAttribute('data-player')}))
-                .filter((value, index, self) => self.indexOf(value) === index);
-            removeDataAttr(videoElements);
-            for (let index = 0; index < bcAccounts.length; index++) {
-                await getBcModule(bcAccounts[index]);
-            }
-        } else {
-            Event.getLegacyEvents().done((events) => {
-                $(document).one(events.FILTER_CONTENT_UPDATED, () => {
-                    loadBrightcove();
-                });
+    /**
+     * Notify video.js of new nodes.
+     *
+     * @param {Event} e The event.
+     * @param {NodeList} nodes List of new nodes.
+     */
+    var notifyVideoJS = function(e, nodes) {
+        var selector = '.brightcove-video-js-container';
+        // Find the descendants matching the expected parent of the audio and video
+        // tags. Then also addBack the nodes matching the same selector. Finally,
+        // we find the audio and video tags contained in those parents. Kind thanks
+        // to jQuery for the simplicity.
+        nodes.find(selector)
+            .addBack(selector)
+                .find('video-js').each(function(index, video) {
+                var $video = $(this);
+                $video.html('');
+                $video.attr('data-store-account', $video.attr('data-account'));
+                $video.attr('data-store-player', $video.attr('data-player'));
+                $video.attr('data-store-video-id', $video.attr('data-video-id'));
+                $video.removeAttr('data-account');
+                $video.removeAttr('data-player');
+                $video.removeAttr('data-video-id');
+
+            // Undefine 'bc' module so it can be reset using the next player's values.
+            // Because Brightcove's script forces itself to be named 'bc' when called as
+            // An AMD module, you have to undefine it before calling a second 'bc' module
+            // With a different url. Simply changing the path and requiring it won't work.
+            // It has to be undef'd before a second call can be made.
+            window.requirejs.undef('bc');
+
+            // Set the 'bc' module path using this video's account and player ids.
+            window.requirejs.config({
+                paths: {
+                    'bc': `${location.protocol}//players.brightcove.net/${ $video.attr('data-store-account')}/${ $video.attr('data-store-player')}_default/index.min`
+                }
             });
-        }
-
-    };
-
-    const getBcModule = function(obj) {
-
-        // Undefine 'bc' module so it can be reset using the next player's values.
-        // Because Brightcove's script forces itself to be named 'bc' when called as
-        // An AMD module, you have to undefine it before calling a second 'bc' module
-        // With a different url. Simply changing the path and requiring it won't work.
-        // It has to be undef'd before a second call can be made.
-        window.requirejs.undef('bc');
-
-        // Set the 'bc' module path using this video's account and player ids.
-        window.requirejs.config({
-            paths: {
-                'bc': `${location.protocol}//players.brightcove.net/${obj.acc}/${obj.player}_default/index.min`
-            }
-        });
-
-        return new Promise(((resolve) => {
             // After 1 second signal that the job is finished with an error
             window.require(['bc'], (bc) => {
                 // Store the current bc in bcs, because we're going to undefine it.
-                bcs[`bc${obj.acc}${obj.player}`] = bc;
+                bcs[`bc${$video.attr('data-store-account')}${$video.attr('data-store-player')}`] = bc;
                 // Initialize all the videos for this account.
-                const player = initVideosByAccount(obj);
-                player.on('loadedmetadata', () => {
-                    resolve(player);
-                });
+                $video.attr('data-account', $video.attr('data-store-account'));
+                $video.attr('data-player', $video.attr('data-store-player'));
+                $video.attr('data-video-id', $video.attr('data-store-video-id'));
+                $video.removeAttr('data-store-account');
+                $video.removeAttr('data-store-player');
+                $video.removeAttr('data-store-video-id');
+                var player = bcs[`bc${$video.attr('data-account')}${$video.attr('data-player')}`](video);
+                player.controls(true);
+                if (player.hasClass('vjs-play-button-shape-square')) {
+                    player.removeClass('vjs-play-button-shape-square');
+                }
             });
-        }));
-    };
-
-    const initVideosByAccount = function(account) {
-        // eslint-disable-next-line max-len
-        const videos = document.querySelectorAll(`video-js[data-store-account='${account.acc}'][data-store-player='${account.player}']`);
-        let res;
-        videos.forEach((video) => {
-            video.setAttribute('data-account', video.getAttribute('data-store-account'));
-            video.setAttribute('data-player', video.getAttribute('data-store-player'));
-            video.setAttribute('data-video-id', video.getAttribute('data-store-video-id'));
-            res = bcs[`bc${account.acc}${account.player}`](video);
-            res.controls(true);
-            if (res.hasClass('vjs-play-button-shape-square')) {
-                res.removeClass('vjs-play-button-shape-square');
-            }
         });
-        return res;
     };
 
-    // Load all accounts and related players
+
     return {
-        init() {
-            loadBrightcove();
-
-            $(document).on('brightcoveinsertedtodom', () => {
-                loadBrightcove();
-            });
-        }
+        setUp: setUp
     };
+
 
 });
