@@ -8,6 +8,19 @@ The Brightcove Player is up to 70% faster than any other video player. That’s 
 
  - Go to Media player setting
  - Enable Brightcove media player (bcplayer)
+ - Install Moodle-atto_brightcove | https://github.com/eLearning-BS23/moodle-atto_brightcove atto editor plugin
+ - Go to Atto editor and add Brightcove Account id, video id and player id by clicking brightcove icon from atto toolbar.
+ - Click on `insert Brighrcove` video 
+ - After click on `insert Brightcove` atto_birghtcove will insert necessary code to display brightcove video
+ 
+ 
+ How to embed brightcove video in Moodle:
+ - Go to brightcove video, Copy ... 
+    - iframe embed code (Standard) or 
+    -  In-Page embed code (Advanced)
+ - Go to Atto editor 
+ - Open editor in source code mode
+ - Pest the code and this will render brightcove player automatically
 
 # Instalation 
 - Check how to install moodle plugins (https://docs.moodle.org/39/en/Installing_plugins)
