@@ -20,7 +20,7 @@ The Brightcove Player is up to 70% faster than any other video player. That’s 
     -  In-Page embed code (Advanced)
  - Go to Atto editor 
  - Open editor in source code mode
- - Pest the code and this will render brightcove player automatically
+ - Pest the code in editor and this will render brightcove player automatically
 
 # Instalation 
 - Check how to install moodle plugins (https://docs.moodle.org/39/en/Installing_plugins)
