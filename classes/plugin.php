@@ -32,7 +32,7 @@ defined('MOODLE_INTERNAL') || die();
  * @copyright 2020 Brain station 23 ltd. <https://brainstation-23.com/>
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class media_bcplayer_plugin extends core_media_player
+class media_bcplayer_plugin extends core_media_player_native
 {
 
     /**
@@ -47,7 +47,7 @@ class media_bcplayer_plugin extends core_media_player
      * @since Moodle 3.2
      */
     public function setup($page){
-        $page->requires->js_amd_inline("require(['media_bcplayer/bcplayer'], function (bc) {bc.init();})");
+        $page->requires->js_amd_inline("require(['media_bcplayer/bcplayer'], function (bc) {bc.setUp();})");
     }
 
     /**
