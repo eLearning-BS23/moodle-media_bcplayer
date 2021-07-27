@@ -6,10 +6,23 @@ The Brightcove Player is up to 70% faster than any other video player. That’s 
 
  How to use brightcove player :
 
- - Go to Media player setting
- - Enable Brightcove media player (bcplayer)
+ - Go to site adminishtration > plugins overview
+ - Click on settings icon beside Brightcove
+ - Enable Brightcove Player (bcplayer)
+ - you can also change width/height of video
 
 # Instalation 
-- Check how to install moodle plugins (https://docs.moodle.org/39/en/Installing_plugins)
-- Or download and unzip the code
-- Paste the code to /media/player/
+
+# Installing via uploaded ZIP file
+- Go to the Moodle plugins directory, select your current Moodle version, then download plugin with a Download button and download the ZIP file.
+- Go to `[moodledirectory]/media/player/`
+- Create new folder named `bcplayer`
+- extract zip content in it
+
+# Instalation via Github
+- `cd [moodledirectory]/media/player/`
+- clone plugin from github `git clone https://github.com/eLearning-BS23/moodle-media_bcplayer.git bcplayer`
+
+- Go to your moodle website from browser
+- Confirm the installation request
+- Check the plugin validation report
