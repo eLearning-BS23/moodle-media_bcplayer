@@ -49,7 +49,7 @@ class media_bcplayer_observer
         $elem = @$dom->loadHTML($modulename->intro);
         $parentnodes = $dom->getElementsByTagName('video-js');
         foreach ($parentnodes as $parentnode) {
-            self::removevideojschild($parentnode);
+            //self::removevideojschild($parentnode);
         }
         $body = $dom->getElementsByTagName('body')->item(0);
         $modulename->intro = $dom->saveXML($body);
@@ -71,7 +71,7 @@ class media_bcplayer_observer
         $elem = @$dom->loadHTML($modulename->intro);
         $parentnodes = $dom->getElementsByTagName('video-js');
         foreach ($parentnodes as $parentnode) {
-            self::removevideojschild($parentnode);
+            //self::removevideojschild($parentnode);
         }
 
         $body = $dom->getElementsByTagName('body')->item(0);
