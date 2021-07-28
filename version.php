@@ -23,7 +23,7 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-$plugin->version   = 2019112200;
+$plugin->version   = 2021072700;
 $plugin->requires  = 2019111803; // Requires Moodle 3.8.3 .
 $plugin->component = 'media_bcplayer';
 $plugin->maturity = MATURITY_STABLE;
