@@ -27,4 +27,4 @@ $plugin->version   = 2021072700;
 $plugin->requires  = 2019111803; // Requires Moodle 3.8.3 .
 $plugin->component = 'media_bcplayer';
 $plugin->maturity = MATURITY_STABLE;
-$plugin->release   = '1.0.1 for Moodle 3.8.4+)';
+$plugin->release   = '1.0.2 for Moodle 3.8.4+)';
